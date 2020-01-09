@@ -86,7 +86,7 @@ get at all this is this class called CMMotionManager.
 18
 00:01:00,060 --> 00:01:01,460
 There's some other classes we're gonna talk about,
-我们还会讲到其它一些
+我们还会讲到其它一些类，
 
 19
 00:01:01,528 --> 00:01:04,796
@@ -96,254 +96,317 @@ but this is the primary one. Now, you can create multiple
 20
 00:01:04,865 --> 00:01:07,131
 instances of this thing, but in a sense,
+现在，你可以创建这个东西的多个实例，
 
 21
 00:01:07,200 --> 00:01:09,834
 there's only set of hardware. So usually in your app,
+但在某种意义上，只有一组硬件。通常在你的app中，
 
 22
 00:01:09,903 --> 00:01:13,805
 you're gonna have one shared CMMotionManager to
+你会有一个共享的CMMotionManager
 
 23
 00:01:13,874 --> 00:01:16,574
 collect all the information from these devices.
+来收集来自这些设备的所有信息。
 
 24
 00:01:16,643 --> 00:01:19,511
 Now, the way the API works, basically, is first you're
+API的工作方式是，
 
 25
 00:01:19,580 --> 00:01:21,680
 gonna check to see what hardware is available,
+首先你要检查有哪些硬件可用，
 
 26
 00:01:21,749 --> 00:01:23,515
 all right, that's a very important check.
+这是很重要的检查。
 
 27
 00:01:23,584 --> 00:01:26,618
 Then you can either start sampling, okay, just
+然后你可以开始采样，
 
 28
 00:01:26,687 --> 00:01:29,754
 asking the CMMotionManager what's the current state of
+只问CMMotionManager加速计的当前状态是什么?
 
 29
 00:01:29,823 --> 00:01:31,857
 the accelerometer? What's the current state of gyro?
+陀螺的当前状态是什么?
 
 30
 00:01:31,925 --> 00:01:34,593
 What's the current state of magnetometer? Or
+磁力仪的电流是多少?
 
 31
 00:01:34,661 --> 00:01:38,863
 you can register a closure, and a certain refresh rate,
+或者你可以注册一个闭包，和一个特定的刷新率，
 
 32
 00:01:38,932 --> 00:01:41,566
 and it will execute your closure at that refresh rate,
+它会以这个刷新率执行你的闭包，
 
 33
 00:01:41,635 --> 00:01:44,703
 as best it can anyway, and tell you what the state is.
+并告诉你状态是什么。
 
 34
 00:01:44,772 --> 00:01:47,505
 So it's kind of like you can either pull the data out
+你可以把数据拉出来，
 
 35
 00:01:47,574 --> 00:01:50,341
 of it, or it can push the data to you. Really either
+也可以把数据推给你。
 
 36
 00:01:50,410 --> 00:01:52,977
 model, and it kinda depends on how your app works as to which
+两种模型都可以，这取决于你的应用是如何工作的。
 
 37
 00:01:53,046 --> 00:01:55,980
 of those is appropriate. So I'm gonna talk about the API's
+我将讲到这两个的API。
 
 38
 00:01:56,049 --> 00:01:58,350
 for both of those things. So let's do number one here,
+我们做第一个，
 
 39
 00:01:58,419 --> 00:02:00,218
 which checking the availability of the sensors.
+检查传感器的可用性。
 
 40
 00:02:00,287 --> 00:02:02,720
 Really, where you're simply are just gonna get
+真的，你只需要找到CMMotionManager
 
 41
 00:02:02,789 --> 00:02:05,824
 your CMMotionManager and then you gonna ask questions like,
+然后问一些问题比如，
 
 42
 00:02:05,893 --> 00:02:08,360
 accelerometer available, is gyro available,
+加速度计可用，陀螺仪可用，
 
 43
 00:02:08,428 --> 00:02:11,095
 magnetometer available? And this is gonna return yes or
+磁力仪可用?这个会返回yes或no
 
 44
 00:02:11,164 --> 00:02:12,931
 no whether these things are available.
+不管这些东西是否可用。
 
 45
 00:02:13,000 --> 00:02:16,001
 Notice that there's something there called device motion,
+注意这里有个东西叫做设备运动，
 
 46
 00:02:16,070 --> 00:02:18,570
 you see accelerometer, gyro, magnetometer, and
+你可以看到加速计，陀螺仪，磁力仪，
 
 47
 00:02:18,638 --> 00:02:21,272
 deviceMotion. So we're gonna talk all about deviceMotion.
+和设备运动。我们会讲到deviceMotion。
 
 48
 00:02:21,341 --> 00:02:25,009
 It's essentially a combination of all the other devices, and
+它本质上是所有其他设备的组合，
 
 49
 00:02:25,078 --> 00:02:27,912
 it allows us to get much more accurate readings,
+它允许我们得到更精确的读数，
 
 50
 00:02:27,981 --> 00:02:31,716
 more interesting readings, by combining the accelerometer,
+更有趣的读数，通过结合加速计，陀螺仪，和磁力仪。
 
 51
 00:02:31,785 --> 00:02:35,253
 gyro, and magnetometer. So the way where you're going to pull
+你获取信息的方式，
 
 52
 00:02:35,322 --> 00:02:38,256
 the information, okay, not gonna register a closure but
+不是注册一个闭包
 
 53
 00:02:38,325 --> 00:02:40,425
 you're just gonna ask for as you need it.
+而是在需要的时候请求。
 
 54
 00:02:40,494 --> 00:02:43,594
 You do that by calling start accelerometer updates, or
+你可以调用start accelerometer updates，
 
 55
 00:02:43,663 --> 00:02:46,832
 start gyro updates and that's gonna tell the hardware,
+或start gyro updates这会告诉硬件，
 
 56
 00:02:46,900 --> 00:02:49,567
 tell iOS, hey, l wanna get this information.
+告诉iOS，嘿，我想获取这个信息。
 
 57
 00:02:49,636 --> 00:02:52,804
 So, if that particular piece of hardware has to be powered
+如果特定的硬件需要启动，
 
 58
 00:02:52,873 --> 00:02:55,773
 up or something like that, then iOS is gonna do that so
+iOS会这样做
 
 59
 00:02:55,842 --> 00:02:58,076
 that you can start asking the value of it.
+这样你就能知道它的值。
 
 60
 00:02:58,145 --> 00:03:02,380
 So that's all you have to do to start pulling the data.
+这就是你开始获取数据所要做的。
 
 61
 00:03:02,449 --> 00:03:05,250
 You can also find out if the hardware is on and
+您还可以在CMMotionManager中查看硬件是否打开
 
 62
 00:03:05,318 --> 00:03:07,919
 collecting data with accelerometer active or
+并使用accelerometer active或
 
 63
 00:03:07,988 --> 00:03:12,290
 gyro active VAR in the CMMotionManager.
+gyro active VAR收集数据。
 
 64
 00:03:12,358 --> 00:03:14,860
 Now a really important thing to do when you're accessing
+当你从这些硬件设备中访问这些数据时
 
 65
 00:03:14,928 --> 00:03:18,530
 this data from these hardware devices is to turn it off,
+要做的一件非常重要的事情是关闭它，
 
 66
 00:03:18,599 --> 00:03:20,898
 okay? The reason you wanna turn it off is,
+明白吗?你想关掉它的原因是，
 
 67
 00:03:20,967 --> 00:03:22,567
 it requires battery, okay?
+它需要电池，明白吗?
 
 68
 00:03:22,636 --> 00:03:26,104
 Who knows how much, it depends on the piece of hardware, to
+谁知道呢，这取决于硬件，
 
 69
 00:03:26,173 --> 00:03:28,473
 do this, and you don't wanna waste the user's battery.
+你不想浪费用户的电池。
 
 70
 00:03:28,542 --> 00:03:31,109
 All right, so we definitely wanna turn if off anytime
+好的，我们当然想在不用的时候关掉它。
 
 71
 00:03:31,178 --> 00:03:33,244
 we're not using it. Not like just when our app quits or
+不只是当我们的应用退出时，
 
 72
 00:03:33,313 --> 00:03:35,813
 something, but actually any time we are not actually gonna
+但实际上任何时候我们都不会用到这些信息，
 
 73
 00:03:35,882 --> 00:03:38,383
 use the information, let's turn that thing off, right,
+我们把那个关掉，
 
 74
 00:03:38,451 --> 00:03:41,052
 save some battery. All right, so now let's talk a little
+节省一些电池。好，
 
 75
 00:03:41,121 --> 00:03:43,621
 bit about that pull interface where you're just gonna
+现在我们来谈谈那个pull接口你会一直
 
 76
 00:03:43,690 --> 00:03:46,091
 ask for the current state of this thing all the time.
+询问这个东西的当前状态。
 
 77
 00:03:46,160 --> 00:03:47,893
 And the API is very similar for
+所有设备的API都很类似，
 
 78
 00:03:47,962 --> 00:03:50,729
 all the devices, gyro, accelerometer, and
+陀螺仪，加速计，磁强计，
 
 79
 00:03:50,797 --> 00:03:55,333
 magnetometer, and for this combined device motion thing.
+还有这个组合设备运动。
 
 80
 00:03:55,401 --> 00:03:56,334
 So, here's what it looks like for
+这是加速度计的样子，
 
 81
 00:03:56,402 --> 00:03:58,971
 accelerometer, it's just a VAR in CMMotionManager called
+它只是CMMotionManager中的一个VAR，
 
 82
 00:03:59,039 --> 00:04:01,272
 accelerometer data. Gives you back a struct,
+叫做accelerometer data。
 
 83
 00:04:01,341 --> 00:04:02,974
